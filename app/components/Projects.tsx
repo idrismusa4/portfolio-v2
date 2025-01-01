@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Image from 'next/image'
-import { X, ExternalLink, Github } from 'lucide-react'
+import { X, ExternalLink, Github, Linkedin } from 'lucide-react'
 
 interface Project {
   id: number
@@ -137,7 +137,7 @@ const projects: Project[] = [
       '/WDS/6.png?height=400&width=600',
       '/WDS/7.png?height=400&width=600',
     ],
-    tags: ['AI/ML','OpenCV', 'YOLO v5/v8','NumPy', 'TensorFlow','PyTorch','PyQt5 and PyQt5-tools','Matplotlib', 'Pandas','Scikit-Learn','Albumentations','Ultralytics', 'Seaborn', 'Jupyter Notebook'],
+    tags: ['AI/ML','Flask','OpenCV', 'YOLO v5/v8','NumPy', 'TensorFlow','PyTorch','PyQt5 and PyQt5-tools','Matplotlib', 'Pandas','Scikit-Learn','Albumentations','Ultralytics', 'Seaborn', 'Jupyter Notebook'],
     liveUrl: 'https://ai-wds.startupcampushq.com/',
     githubUrl: 'https://github.com/idrismusa4/ai-wds-webapp',
   },
@@ -169,9 +169,8 @@ export default function Projects() {
               <Image
                 src={project.previewImage}
                 alt={project.title}
-                layout="fill"
-                objectFit="cover"
-                className="transition-transform duration-500 group-hover:scale-105"
+                fill
+                className="transition-transform duration-500 group-hover:scale-105 object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent p-4 sm:p-6 flex flex-col justify-end">
                 <h4 className="text-lg sm:text-xl md:text-2xl font-bold mb-1 sm:mb-2">{project.title}</h4>
@@ -210,9 +209,8 @@ export default function Projects() {
                 <Image
                   src={selectedProject.previewImage}
                   alt={selectedProject.title}
-                  layout="fill"
-                  objectFit="cover"
-                  className="rounded-t-xl"
+                  fill
+                  className="rounded-t-xl object-cover"
                 />
                 <button
                   onClick={() => setSelectedProject(null)}
@@ -284,9 +282,13 @@ export default function Projects() {
                           href={teammate.linkedin}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="px-4 py-2 bg-blue-500/20 text-blue-300 rounded-lg hover:bg-blue-500/30 transition-colors"
+                          className="group px-4 py-2 bg-blue-500/20 text-blue-300 rounded-lg hover:bg-blue-500 hover:text-white transition-all duration-200 flex items-center gap-2"
                         >
-                          {teammate.name}
+                          <span>{teammate.name}</span>
+                          <span className="flex items-center gap-1 text-sm opacity-0 group-hover:opacity-100 transition-opacity">
+                            <Linkedin className="w-4 h-4" />
+                            Open
+                          </span>
                         </a>
                       ))}
                     </div>
@@ -305,9 +307,8 @@ export default function Projects() {
                         <Image
                           src={screenshot}
                           alt={`${selectedProject.title} screenshot ${index + 1}`}
-                          layout="fill"
-                          objectFit="cover"
-                          className="rounded-lg"
+                          fill
+                          className="rounded-lg object-cover"
                         />
                       </div>
                     ))}
