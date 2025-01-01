@@ -146,6 +146,7 @@ const projects: Project[] = [
 
 export default function Projects() {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null)
+  const [enlargedImage, setEnlargedImage] = useState<string | null>(null)
 
   return (
     <section id="projects" className="py-20 px-4 max-w-7xl mx-auto">
@@ -155,13 +156,13 @@ export default function Projects() {
         transition={{ duration: 0.8 }}
       >
         <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-8 sm:mb-12 text-center">Featured Work</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-8">
           {projects.map((project) => (
             <motion.div
               key={project.id}
               layoutId={`project-${project.id}`}
               onClick={() => setSelectedProject(project)}
-              className="group relative bg-gray-900 rounded-xl overflow-hidden cursor-pointer aspect-video"
+              className="group relative bg-gray-900 rounded-xl overflow-hidden cursor-pointer aspect-[16/12] sm:aspect-video"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >
@@ -172,14 +173,14 @@ export default function Projects() {
                 objectFit="cover"
                 className="transition-transform duration-500 group-hover:scale-105"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent p-6 flex flex-col justify-end">
-                <h4 className="text-2xl font-bold mb-2">{project.title}</h4>
-                <p className="text-gray-300 mb-4 line-clamp-2">{project.description}</p>
-                <div className="flex flex-wrap gap-2">
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent p-4 sm:p-6 flex flex-col justify-end">
+                <h4 className="text-lg sm:text-xl md:text-2xl font-bold mb-1 sm:mb-2">{project.title}</h4>
+                <p className="text-sm sm:text-base text-gray-300 mb-2 sm:mb-4 line-clamp-2">{project.description}</p>
+                <div className="flex flex-wrap gap-1 sm:gap-2">
                   {project.tags.map((tag) => (
                     <span
                       key={tag}
-                      className="px-3 py-1 bg-blue-500/20 text-blue-300 rounded-full text-sm"
+                      className="px-2 sm:px-3 py-0.5 sm:py-1 bg-blue-500/20 text-blue-300 rounded-full text-xs sm:text-sm"
                     >
                       {tag}
                     </span>
@@ -223,6 +224,17 @@ export default function Projects() {
               <div className="p-6">
                 <h3 className="text-3xl font-bold mb-4">{selectedProject.title}</h3>
                 <p className="text-gray-300 mb-6">{selectedProject.description}</p>
+                <h3 className='text-lg font-semibold mb-2'>Tools Used:</h3>
+                <div className='flex flex-wrap gap-2 mb-4'>
+                  {selectedProject.tags.map((tag) => (
+                <span
+                  key={tag}
+                      className="px-2 py-1 bg-blue-500/20 text-blue-300 rounded-full text-sm"
+                    >
+                      {tag}
+                    </span>
+                ))}
+                </div>
                 
                 <div className="grid grid-cols-2 gap-4 mb-6">
                   <div>
@@ -283,9 +295,13 @@ export default function Projects() {
 
                 <div>
                   <h4 className="text-lg font-semibold mb-4">Screenshots</h4>
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {selectedProject.screenshots.map((screenshot, index) => (
-                      <div key={index} className="relative aspect-video">
+                      <div 
+                        key={index} 
+                        className="relative aspect-video cursor-pointer hover:opacity-90 transition-opacity"
+                        onClick={() => setEnlargedImage(screenshot)}
+                      >
                         <Image
                           src={screenshot}
                           alt={`${selectedProject.title} screenshot ${index + 1}`}
@@ -299,6 +315,38 @@ export default function Projects() {
                 </div>
               </div>
             </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {enlargedImage && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setEnlargedImage(null)}
+            className="fixed inset-0 bg-black/90 flex items-center justify-center p-4 z-50"
+          >
+            <div className="relative w-full max-w-5xl max-h-[90vh]">
+              <button
+                onClick={() => setEnlargedImage(null)}
+                className="absolute -top-10 right-0 p-2 bg-black/50 rounded-full hover:bg-black/70 transition-colors"
+              >
+                <X className="w-6 h-6" />
+              </button>
+              <div className="relative w-full h-full">
+                <Image
+                  src={enlargedImage}
+                  alt="Enlarged screenshot"
+                  layout="responsive"
+                  width={1920}
+                  height={1080}
+                  objectFit="contain"
+                  className="rounded-lg"
+                />
+              </div>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
